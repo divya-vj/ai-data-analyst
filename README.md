@@ -10,11 +10,11 @@ Professional AI-powered data analysis platform built with Python and Streamlit.
 
 
 
-\*\*Try it now:\*\* \[https://your-app-url.streamlit.app](https://your-app-url.streamlit.app)
+\*\*Try it now:\*\* \[https://ai-data-analyst-ad3maqemsshlptsrvxebtc.streamlit.app/
 
 
 
-\*(You'll update this URL after deployment)\*
+
 
 
 
@@ -166,7 +166,7 @@ ai-data-analyst-pro/
 
 
 
-\*\*Your Name\*\*
+\*\*Divya\*\*
 
 \- GitHub: \[@divya-vj](https://github.com/divya-vj)
 
