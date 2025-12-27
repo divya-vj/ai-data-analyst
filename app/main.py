@@ -13,6 +13,7 @@ import numpy as np
 from config import *
 from data_loader import DataLoader
 from analyzer import DataAnalyzer
+from insights import InsightsGenerator
 
 # Page config
 st.set_page_config(
@@ -256,6 +257,44 @@ elif missing_pct < 20:
     st.warning(f"⚠️ **Data Quality: Fair** - {summary['missing_total']:,} missing values and {summary['duplicates']:,} duplicates found")
 else:
     st.error(f"❌ **Data Quality: Needs Attention** - Significant data quality issues detected")
+
+# AI-Powered Insights Section
+st.markdown("### 🤖 AI-Powered Insights")
+
+with st.spinner("Generating intelligent insights..."):
+    insights = InsightsGenerator.generate_insights(df, summary)
+    numeric_insights = InsightsGenerator.generate_numeric_insights(df)
+    all_insights = insights + numeric_insights
+
+# Display insights in a beautiful grid
+cols = st.columns(2)
+for idx, insight in enumerate(all_insights[:6]):  # Show top 6 insights
+    with cols[idx % 2]:
+        # Color based on impact
+        if insight['impact'] == 'high':
+            border_color = "#ff6b6b"
+        elif insight['impact'] == 'medium':
+            border_color = "#ffa726"
+        else:
+            border_color = "#66bb6a"
+        
+        st.markdown(f"""
+            <div style="
+                border-left: 4px solid {border_color};
+                padding: 1rem;
+                margin: 0.5rem 0;
+                background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            ">
+                <h4 style="margin: 0; color: #2c3e50;">
+                    {insight['icon']} {insight['title']}
+                </h4>
+                <p style="margin: 0.5rem 0 0 0; color: #34495e; font-size: 0.9rem;">
+                    {insight['description']}
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
 
 # Column types breakdown
 st.markdown("### 📋 Column Types")
