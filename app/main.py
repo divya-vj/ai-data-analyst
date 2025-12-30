@@ -10,10 +10,12 @@ if str(app_dir) not in sys.path:
 import streamlit as st
 import pandas as pd
 import numpy as np
+from datetime import datetime
 from config import *
 from data_loader import DataLoader
 from analyzer import DataAnalyzer
 from insights import InsightsGenerator
+from report_generator import ReportGenerator
 
 # Page config
 st.set_page_config(
@@ -266,6 +268,7 @@ with st.spinner("Generating intelligent insights..."):
     numeric_insights = InsightsGenerator.generate_numeric_insights(df)
     all_insights = insights + numeric_insights
 
+
 # Display insights in a beautiful grid
 cols = st.columns(2)
 for idx, insight in enumerate(all_insights[:6]):  # Show top 6 insights
@@ -295,6 +298,43 @@ for idx, insight in enumerate(all_insights[:6]):  # Show top 6 insights
                 </p>
             </div>
         """, unsafe_allow_html=True)
+
+# Download Report Section
+st.markdown("---")
+st.markdown("### 📥 Export Analysis")
+
+col1, col2, col3 = st.columns([1, 2, 1])
+
+with col2:
+    st.markdown("""
+        <div style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; color: white;">
+            <h4 style="margin: 0;">Generate Professional Report</h4>
+            <p style="margin: 0.5rem 0; font-size: 0.9rem;">Download comprehensive analysis with insights and recommendations</p>
+        </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("📄 Generate Report", type="primary", use_container_width=True):
+        with st.spinner("🔄 Generating comprehensive report..."):
+            # Generate report with all insights
+            report_text = ReportGenerator.generate_text_report(df, summary, all_insights)
+            
+            # Create download button
+            st.download_button(
+                label="⬇️ Download Report (TXT)",
+                data=report_text,
+                file_name=f"data_analysis_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+                mime="text/plain",
+                use_container_width=True,
+                type="primary"
+            )
+            
+            st.success("✅ Report generated successfully! Click above to download.")
+            
+            # Show preview
+            with st.expander("👁️ Preview Report"):
+                st.text(report_text[:1000] + "\n\n... (download full report to see more)")
+
+st.markdown("---")
 
 # Column types breakdown
 st.markdown("### 📋 Column Types")
