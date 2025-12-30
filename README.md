@@ -56,7 +56,7 @@ Visit the live demo link above - no installation required!
 
 ```bash
 
-git clone https://github.com/YourUsername/ai-data-analyst-pro.git
+git clone https://github.com/divya-vj/ai-data-analyst-pro.git
 
 cd ai-data-analyst-pro
 
